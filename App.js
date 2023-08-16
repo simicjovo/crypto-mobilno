@@ -1,6 +1,14 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Platform,
+} from "react-native";
 import { Line, Svg, SvgUri } from "react-native-svg";
 
 export default function App() {
@@ -28,7 +36,7 @@ export default function App() {
   }, []);
   return (
     <View style={styles.container}>
-      <SafeAreaView />
+      <SafeAreaView style={styles.AndroidSafeArea} />
       <ScrollView style={styles.containerScroll}>
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>Top coins</Text>
@@ -100,11 +108,13 @@ export default function App() {
                     {elem.sparkline.map((e, index) => {
                       if (index === 23) return null;
                       let y1Value =
+                        100 -
                         ((parseFloat(e) - minValue) / referenceValue) * 100;
                       let y2Value =
+                        100 -
                         (parseFloat(elem.sparkline[index + 1] - minValue) /
                           referenceValue) *
-                        100;
+                          100;
                       return (
                         <Line
                           x1={`${index * 4.16}%`}
@@ -212,5 +222,8 @@ const styles = StyleSheet.create({
   },
   topCoinText: {
     color: "#B5B5B5",
+  },
+  AndroidSafeArea: {
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
