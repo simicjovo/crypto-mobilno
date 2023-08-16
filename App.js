@@ -68,7 +68,18 @@ export default function App() {
                       <Text style={styles.cardLeftSideTextPrice}>
                         $
                         {parseFloat(elem.price).toLocaleString("en-US", {
-                          maximumFractionDigits: 2,
+                          maximumFractionDigits:
+                            parseFloat(elem.price) < 2
+                              ? 6
+                              : parseFloat(elem.price) < 10
+                              ? 5
+                              : parseFloat(elem.price) < 100
+                              ? 4
+                              : parseFloat(elem.price) < 1000
+                              ? 3
+                              : parseFloat(elem.price) < 10000
+                              ? 2
+                              : 2,
                         })}
                       </Text>
                       <Text
