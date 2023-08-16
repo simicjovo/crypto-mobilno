@@ -34,7 +34,12 @@ export default function App() {
           <Text style={styles.titleText}>Top coins</Text>
           <View style={styles.topCoinsContainer}>
             {coins.slice(0, 5).map((elem) => {
-              return <SvgUri width={40} height={40} uri={elem.iconUrl} />;
+              return (
+                <View style={styles.topCoinsWrapper}>
+                  <SvgUri width={40} height={40} uri={elem.iconUrl} />
+                  <Text style={styles.topCoinText}>{elem.symbol}</Text>
+                </View>
+              );
             })}
           </View>
         </View>
@@ -189,5 +194,12 @@ const styles = StyleSheet.create({
   cardRightSide: {
     width: "30%",
     height: "100%",
+  },
+  topCoinsWrapper: {
+    gap: 4,
+    alignItems: "center",
+  },
+  topCoinText: {
+    color: "#B5B5B5",
   },
 });
