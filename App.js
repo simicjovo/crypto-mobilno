@@ -43,7 +43,7 @@ export default function App() {
           <View style={styles.topCoinsContainer}>
             {coins.slice(0, 5).map((elem) => {
               return (
-                <View style={styles.topCoinsWrapper}>
+                <View style={styles.topCoinsWrapper} key={elem.uuid}>
                   <SvgUri width={40} height={40} uri={elem.iconUrl} />
                   <Text style={styles.topCoinText}>{elem.symbol}</Text>
                 </View>
@@ -63,7 +63,7 @@ export default function App() {
             let minValue = parseFloat(sortedSparkline[0]);
             let referenceValue = maxValue - minValue;
             return (
-              <View style={styles.cardContainer}>
+              <View style={styles.cardContainer} key={elem.uuid}>
                 <View style={styles.cardLeftSide}>
                   <View style={styles.logoContainer}>
                     <SvgUri width={36} height={36} uri={elem.iconUrl} />
@@ -123,6 +123,7 @@ export default function App() {
                           y2={`${y2Value}%`}
                           stroke={parseFloat(elem.change) > 0 ? "green" : "red"}
                           strokeWidth="2"
+                          key={index}
                         />
                       );
                     })}
