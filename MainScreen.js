@@ -10,14 +10,18 @@ import {
   StatusBar,
   Platform,
   TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { Line, Svg, SvgUri } from "react-native-svg";
 
 export default function MainScreen({ navigation }) {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const fetchCoins = useCallback(async () => {
     try {
+      setLoading(true);
       let response = await axios.get("https://api.coinranking.com/v2/coins");
       setCoins(
         response.data.data.coins.filter((elem) => {
@@ -29,17 +33,36 @@ export default function MainScreen({ navigation }) {
         })
       );
       setLoading(false);
+      setRefreshing(false);
     } catch (error) {
       setLoading(false);
+      setRefreshing(false);
     }
   }, []);
   useEffect(() => {
     fetchCoins();
   }, []);
+  if (loading)
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator color="#0E7AFE" size="large" />
+      </View>
+    );
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.AndroidSafeArea} />
-      <ScrollView style={styles.containerScroll}>
+      <ScrollView
+        style={styles.containerScroll}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              fetchCoins();
+            }}
+          />
+        }
+      >
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>Top coins</Text>
           <View style={styles.topCoinsContainer}>
@@ -242,5 +265,11 @@ const styles = StyleSheet.create({
   },
   AndroidSafeArea: {
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
