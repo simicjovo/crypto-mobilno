@@ -8,8 +8,10 @@ import {
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SvgUri } from "react-native-svg";
 
 export default function SingleCoin({ route, navigation }) {
+  let { coin } = route.params;
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.container}>
@@ -24,6 +26,10 @@ export default function SingleCoin({ route, navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.contentContainer}>
+          <View style={styles.titleContainer}>
+            <SvgUri width={100} height={100} uri={coin.iconUrl} />
+            <Text style={styles.titleText}>{coin.name}</Text>
+          </View>
           <Text>{JSON.stringify(route.params)}</Text>
         </View>
       </SafeAreaView>
@@ -51,5 +57,18 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+    paddingHorizontal: 22,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 36,
+  },
+  titleText: {
+    fontSize: 36,
+    fontWeight: "700",
+    paddingLeft: 36,
+    flexWrap: "wrap",
+    flexShrink: 1,
   },
 });
