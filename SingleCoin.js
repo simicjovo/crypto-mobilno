@@ -231,5 +231,6 @@ const styles = StyleSheet.create({
   chartContainer: {
     height: 200,
     width: "100%",
+    marginTop: 40,
   },
 });
