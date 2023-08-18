@@ -202,16 +202,18 @@ const styles = StyleSheet.create({
   },
   leftInfoContainer: {
     gap: 2,
+    width: "33%",
   },
   infoContainer: {
     alignItems: "center",
     gap: 2,
+    width: "33%",
   },
   rightInfoContainer: {
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "center",
     gap: 2,
-    minWidth: 50,
+    width: "33%",
   },
   infoTopText: {
     fontWeight: "700",
