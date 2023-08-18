@@ -21,7 +21,6 @@ export default function MainScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const fetchCoins = useCallback(async () => {
     try {
-      setLoading(true);
       let response = await axios.get("https://api.coinranking.com/v2/coins");
       setCoins(
         response.data.data.coins.filter((elem) => {
