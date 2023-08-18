@@ -8,10 +8,26 @@ import {
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SvgUri } from "react-native-svg";
+import { Line, Polygon, Svg, SvgUri } from "react-native-svg";
 
 export default function SingleCoin({ route, navigation }) {
   let { coin } = route.params;
+  let sortedSparkline = [...coin.sparkline].sort();
+  let maxValue = parseFloat(sortedSparkline[sortedSparkline.length - 1]);
+  let minValue = parseFloat(sortedSparkline[0]);
+  let referenceValue = maxValue - minValue;
+
+  let computedPointsArray = coin.sparkline.map((elem, index) => {
+    if (index === 23) return "";
+    let y1Value = 100 - ((parseFloat(elem) - minValue) / referenceValue) * 100;
+    let y2Value =
+      100 -
+      (parseFloat(coin.sparkline[index + 1] - minValue) / referenceValue) * 100;
+    return `${index * 4.16 + index * 0.24},${y1Value} ${
+      (index + 1) * 4.16 + (index + 1) * 0.24
+    },${y2Value} `;
+  });
+  let computedPoints = `0,100 ${computedPointsArray.join("")} 100,100 0,100`;
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.container}>
@@ -98,7 +114,47 @@ export default function SingleCoin({ route, navigation }) {
               </Text>
             </View>
           </View>
-          <Text>{JSON.stringify(route.params)}</Text>
+          <View style={styles.chartContainer}>
+            <Svg
+              height="100%"
+              width="100%"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              {coin.sparkline.map((e, index) => {
+                if (index === 23) return null;
+                let y1Value =
+                  100 - ((parseFloat(e) - minValue) / referenceValue) * 100;
+                let y2Value =
+                  100 -
+                  (parseFloat(coin.sparkline[index + 1] - minValue) /
+                    referenceValue) *
+                    100;
+                return (
+                  <>
+                    <Line
+                      x1={`${index * 4.16 + index * 0.24}`}
+                      y1={`${y1Value}`}
+                      x2={`${(index + 1) * 4.16 + (index + 1) * 0.24}`}
+                      y2={`${y2Value}`}
+                      stroke={parseFloat(coin.change) > 0 ? "green" : "red"}
+                      strokeWidth="2"
+                      key={index}
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </>
+                );
+              })}
+              <Polygon
+                points={computedPoints}
+                fill={parseFloat(coin.change) > 0 ? "green" : "red"}
+                stroke={parseFloat(coin.change) > 0 ? "green" : "red"}
+                opacity={0.22}
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            </Svg>
+          </View>
         </View>
       </SafeAreaView>
     </View>
@@ -171,5 +227,9 @@ const styles = StyleSheet.create({
   PriceDown: {
     color: "#E12323",
     fontWeight: "600",
+  },
+  chartContainer: {
+    height: 200,
+    width: "100%",
   },
 });
