@@ -131,18 +131,16 @@ export default function SingleCoin({ route, navigation }) {
                     referenceValue) *
                     100;
                 return (
-                  <>
-                    <Line
-                      x1={`${index * 4.16 + index * 0.24}`}
-                      y1={`${y1Value}`}
-                      x2={`${(index + 1) * 4.16 + (index + 1) * 0.24}`}
-                      y2={`${y2Value}`}
-                      stroke={parseFloat(coin.change) > 0 ? "green" : "red"}
-                      strokeWidth="2"
-                      key={index}
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </>
+                  <Line
+                    x1={`${index * 4.16 + index * 0.24}`}
+                    y1={`${y1Value}`}
+                    x2={`${(index + 1) * 4.16 + (index + 1) * 0.24}`}
+                    y2={`${y2Value}`}
+                    stroke={parseFloat(coin.change) > 0 ? "green" : "red"}
+                    strokeWidth="2"
+                    key={index}
+                    vectorEffect="non-scaling-stroke"
+                  />
                 );
               })}
               <Polygon
