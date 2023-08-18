@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingTop: 12,
-    paddingHorizontal: 22,
   },
   allCardsContainer: {
     paddingBottom: 22,
